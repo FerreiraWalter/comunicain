@@ -1,12 +1,32 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.example.com/data';
+interface FetchDataOptions {
+  url: string;
+  path?: string;
+  httpMethod: string;
+  headers?: Record<string, string>;
+  body?: any;
+  params?: Record<string, any>;
+  query?: Record<string, any>;
+}
 
-export const fetchData = async () => {
+export const fetchData = async (options: FetchDataOptions) => {
+  const { url, path = '', headers = {}, body = {}, params = {}, query = {}, httpMethod } = options;
+  
   try {
-    const response = await axios.get(API_URL);
+    const fullUrl = `${url}${path}`;
+
+    const response = await axios({
+      method: httpMethod,
+      url: fullUrl,
+      headers,
+      params: params,
+      data: body,
+    });
+
     return response.data;
   } catch (error) {
-    throw new Error('Failed to fetch data from third party');
+    console.error('Error fetching external API:', error);
+    throw error;
   }
 };

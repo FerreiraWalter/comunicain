@@ -3,6 +3,6 @@ import { getExternalApiData } from '../controllers/externalApiController';
 
 const router = Router();
 
-router.get('/data', getExternalApiData);
+router.post('/data', getExternalApiData);
 
 export default router;

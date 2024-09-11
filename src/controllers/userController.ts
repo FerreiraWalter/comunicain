@@ -1,23 +1,25 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/userService';
 import { UUID } from 'crypto';
-import { console } from 'inspector';
+import { validateUserInfo } from '../utils/userUtils';
 
 interface UserParams {
   id: UUID
 }
 
-export const getUsers = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log("Chegou aqui 1")
-    const users = await UserService.getAllUsers();
+    const limit = parseInt(req.query.limit as string, 10) || 5;
+    const offset = parseInt(req.query.offset as string, 10) || 0;
+
+    const users = await UserService.getAllUsers(limit, offset);
     res.json(users);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to get users' });
+    next(error);
   }
 };
 
-export const getUserById = async (req: Request<UserParams>, res: Response) => {
+export const getUserById = async (req: Request<UserParams>, res: Response, next: NextFunction) => {
   try {
     const user = await UserService.getUserById(req.params.id);
     if (user) {
@@ -26,21 +28,27 @@ export const getUserById = async (req: Request<UserParams>, res: Response) => {
       res.status(404).json({ error: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to get user' });
+    next(error);
   }
 };
 
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log("chegou aqui 1")
+    const { name, email } = req.body;
+
+    const { isValid, message } = validateUserInfo(name, email);
+    if (!isValid) {
+      return res.status(400).json({ message: message });
+    }
+
     const user = await UserService.createUser(req.body);
     res.status(201).json(user);
   } catch (error) {
-    res.status(400).json({ error: 'Failed to create user', er: error });
+    next(error);
   }
 };
 
-export const updateUser = async (req: Request<UserParams>, res: Response) => {
+export const updateUser = async (req: Request<UserParams>, res: Response, next: NextFunction) => {
   try {
     const user = await UserService.updateUser(req.params.id, req.body);
     if (user) {
@@ -49,11 +57,11 @@ export const updateUser = async (req: Request<UserParams>, res: Response) => {
       res.status(404).json({ error: 'User not found' });
     }
   } catch (error) {
-    res.status(400).json({ error: 'Failed to update user' });
+    next(error); 
   }
 };
 
-export const deleteUser = async (req: Request<UserParams>, res: Response) => {
+export const deleteUser = async (req: Request<UserParams>, res: Response, next: NextFunction) => {
   try {
     const result = await UserService.deleteUser(req.params.id);
     if (result) {
@@ -62,6 +70,6 @@ export const deleteUser = async (req: Request<UserParams>, res: Response) => {
       res.status(404).json({ error: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete user' });
+    next(error); 
   }
 };
