@@ -19,6 +19,9 @@ export class UserService {
     return await prisma.user.findMany({
       skip: offset,
       take: limit,
+      where: {
+        isActive: true,
+      },
     });
   }
 
@@ -44,7 +47,6 @@ export class UserService {
     }
   }
   
-
   static async updateUser(id: UUID, data: Partial<Omit<User, 'id' | 'createdAt' | 'updatedAt'>>): Promise<User | null> {
     return await prisma.user.update({
       where: { id },
@@ -53,6 +55,11 @@ export class UserService {
   }
 
   static async deleteUser(id: UUID): Promise<User | null> {
-    return await prisma.user.delete({ where: { id } });
+    return await prisma.user.update({
+      where: { id },
+      data: {
+        isActive: false,
+      },
+    });
   }
 }
