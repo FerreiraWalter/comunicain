@@ -1,8 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-
-interface CustomError extends Error {
-  status?: number;
-}
+import { CustomError } from '../utils/customerError';
 
 export const errorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.status || 500;

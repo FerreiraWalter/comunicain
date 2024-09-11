@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { CustomError } from '../utils/customerError';
 
 interface FetchDataOptions {
   url: string;
@@ -20,13 +21,24 @@ export const fetchData = async (options: FetchDataOptions) => {
       method: httpMethod,
       url: fullUrl,
       headers,
-      params: params,
+      params,
       data: body,
     });
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching external API:', error);
-    throw error;
+    if (error instanceof AxiosError) {
+      if (error.response) {
+        throw new CustomError(
+          `Erro ao buscar dados da API externa: ${error.response.status} - ${error.response.statusText}`,
+          502
+        );
+      } else if (error.request) {
+        throw new CustomError('Nenhuma resposta recebida da API externa.', 504);
+      } else {
+        throw new CustomError('Erro ao configurar a requisição para a API externa.', 500);
+      }
+    }
+    throw new CustomError('Erro desconhecido ao tentar acessar a API externa.', 500);
   }
 };

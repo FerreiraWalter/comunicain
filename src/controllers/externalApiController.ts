@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { fetchData } from '../services/externalApiService';
 
-export const getExternalApiData = async (req: Request, res: Response) => {
+export const getExternalApiData = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await fetchData(req.body);
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch data from third party' });
+    next(error);
   }
 };
