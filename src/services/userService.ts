@@ -1,8 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { UUID } from 'crypto';
+import prisma from '../config/db.config';
 
-const prisma = new PrismaClient();
 
 type User = {
   id: string;
