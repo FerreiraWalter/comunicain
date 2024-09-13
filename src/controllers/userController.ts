@@ -1,13 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/userService';
 import { UUID } from 'crypto';
+import jwt from 'jsonwebtoken';
 import { validateUserInfo } from '../utils/userUtils';
 
-interface UserParams {
-  id: UUID
+interface AuthenticatedRequest extends Request {
+  user?: string | jwt.JwtPayload;
 }
 
-export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
+interface UserParams {
+  id: string
+}
+
+export const getUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const limit = parseInt(req.query.limit as string, 10) || 5;
     const offset = parseInt(req.query.offset as string, 10) || 0;
@@ -19,7 +24,7 @@ export const getUsers = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export const getUserById = async (req: Request<UserParams>, res: Response, next: NextFunction) => {
+export const getUserById = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const user = await UserService.getUserById(req.params.id);
     if (user) {
@@ -48,7 +53,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   }
 };
 
-export const updateUser = async (req: Request<UserParams>, res: Response, next: NextFunction) => {
+export const updateUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const user = await UserService.updateUser(req.params.id, req.body);
     if (user) {
@@ -61,7 +66,7 @@ export const updateUser = async (req: Request<UserParams>, res: Response, next: 
   }
 };
 
-export const deleteUser = async (req: Request<UserParams>, res: Response, next: NextFunction) => {
+export const deleteUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const result = await UserService.deleteUser(req.params.id);
     if (result) {
