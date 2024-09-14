@@ -7,7 +7,11 @@ import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['authorization', 'Content-Type'],
+}));
+
 app.use(express.json());
 
 app.use('/users', userRoutes);

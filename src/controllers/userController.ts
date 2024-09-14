@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/userService';
-import { UUID } from 'crypto';
 import jwt from 'jsonwebtoken';
-import { validateUserInfo } from '../utils/userUtils';
+import { validateUserInfo, validateUserUpdate } from '../utils/userUtils';
 
 interface AuthenticatedRequest extends Request {
   user?: string | jwt.JwtPayload;
@@ -37,7 +36,7 @@ export const getUserById = async (req: AuthenticatedRequest, res: Response, next
   }
 };
 
-export const createUser = async (req: Request, res: Response, next: NextFunction) => {
+export const createUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const { name, email } = req.body;
 
@@ -55,6 +54,13 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 
 export const updateUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
+    const { name, email } = req.body;
+
+    const { isValid, message } = validateUserUpdate(name, email);
+    if (!isValid) {
+      return res.status(400).json({ message: message });
+    }
+
     const user = await UserService.updateUser(req.params.id, req.body);
     if (user) {
       res.json(user);

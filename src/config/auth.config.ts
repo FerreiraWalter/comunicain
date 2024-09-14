@@ -1,4 +1,4 @@
 export const authConfig = {
-  secret: 'my_secret_key',
+  secret: 'walter_comunicain',
   expiresIn: '1h',
 };
