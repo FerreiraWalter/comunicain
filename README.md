@@ -125,12 +125,19 @@ Aqui estão todas as rotas disponíveis e como utilizá-las via **cURL**:
 
 #### **POST** `/external-api/data`
 
--   **Descrição**: Faz uma requisição para uma API externa e retorna os dados.
--   **Exemplo**:
-    
+-   **Descrição**: Faz uma requisição para uma API externa (neste caso, o OpenWeatherMap) e retorna os dados climáticos.
 
-    >     `curl -X POST http://localhost:3000/external-api/data \
-    >     -H 'authorization: Bearer <seu_token_jwt>'`
+**Exemplo**:
+
+    `curl -X POST http://localhost:3000/external-api/data \ 
+     -H 'authorization: Bearer <seu_token_jwt>' \ 
+	  -H 'Content-Type: application/json' \ 
+     -d '{ "url": "https://api.openweathermap.org/data/2.5", "path": "/weather",
+	"headers": {}, "httpMethod": "GET", "body": {}, "params": { "lat":
+	"-10.9472", "lon": "-37.0731", "appid":
+	"6640af658c4d4b9ebd7746b69b1d75df" }, "query": {} 
+      }'`
+
 
 
 ## Como Rodar os Testes
