@@ -1,5 +1,7 @@
 import { UserService } from '../../src/services/userService';
-import prisma from '../../src/config/db.config';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 describe('UserService', () => {
   beforeEach(async () => {
