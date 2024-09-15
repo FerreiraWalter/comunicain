@@ -17,4 +17,4 @@
     
     -   **CI/CD Automatizado**: Utilização de pipelines de **CI/CD** com ferramentas como **Jenkins** ou **GitHub Actions** para automação de testes e deploys.
     -   **Infraestrutura como Código (IaC)**: Configurar a infraestrutura com ferramentas como **Terraform** para fácil escalabilidade e replicação.
-    -   **Observabilidade**: Garantir **monitoramento contínuo** e práticas de segurança adequadas utilizando ferramentas como **Elasticsearch**.
+    -   **Observabilidade**: Garantir **monitoramento contínuo** e práticas de segurança adequadas utilizando ferramentas como **Winston** ou **Elasticsearch**.
