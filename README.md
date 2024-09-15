@@ -1,10 +1,10 @@
-<h1 align="center">ComunicaIn</h1> <p align="center"> <strong>API RESTful</strong> desenvolvida com <strong>Node.js</strong>, utilizando <strong>Express</strong> como framework, <strong>Prisma ORM</strong> para gerenciamento do banco de dados <strong>PostgreSQL</strong>  e containerização através de <strong>Docker Compose</strong>. Este guia fornece instruções detalhadas para configuração, execução, rotas disponíveis e como rodar os testes da aplicação. </p>
+<h1 align="center">💬ComunicaIn</h1> <p align="center"> <strong>API RESTful</strong> desenvolvida com <strong>Node.js</strong>, utilizando <strong>Express</strong> como framework, <strong>Prisma ORM</strong> para gerenciamento do banco de dados <strong>PostgreSQL</strong>  e containerização através de <strong>Docker Compose</strong>. Este guia fornece instruções detalhadas para configuração, execução, rotas disponíveis e como rodar os testes da aplicação. </p>
 
 <h3 align="center">🔍 Informações extras </h3>
 <p align="center">
   <a href="https://github.com/FerreiraWalter/comunicain/blob/main/GOOD_PRACTICES.md">Boas práticas</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/FerreiraWalter/comunicain/blob/main/ARCHITECTURAL_DESIGN.md">Arquitetura da aplicação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/API_DECISIONS.md">Decisões tomadas</a>
+  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/API_DECISIONS.md">Decisões tomadas</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://github.com/FerreiraWalter/comunicain/blob/main/NEXT_STEPS.md">Proximos passos</a>
 </p>
 
 ## Pré-requisitos
@@ -24,7 +24,8 @@ Antes de iniciar, certifique-se de que possui as seguintes ferramentas instalada
 1.  **Clone o Repositório**: Para começar, clone este repositório em sua máquina local utilizando o comando:
     
 
-    > git clone https://github.com/FerreiraWalter/comunicain.git 
+    > git clone https://github.com/FerreiraWalter/comunicain.git
+    > 
     > cd comunicain
 
 	- Em seguida rode o comando:     `npm install` para instalar todas as dependências da aplicação.
@@ -63,7 +64,7 @@ Aqui estão todas as rotas disponíveis e como utilizá-las via **cURL**:
 -   **Exemplo**:
 
     >   `curl -X GET http://localhost:3000/users \
-    >     -H 'authorization: Bearer <seu_token_jwt>'`
+    >    -H 'authorization: Bearer <seu_token_jwt>'`
 
     
 
@@ -144,5 +145,5 @@ A aplicação utiliza **Jest**.
     
 2.  **Executar os Testes**: Para rodar todos os testes unitários e de integração, execute o seguinte comando:
     
-    `npm test` 
+    `npm run test` 
     
