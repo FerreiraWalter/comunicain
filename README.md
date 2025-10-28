@@ -1,156 +1,184 @@
-<h1 align="center">💬ComunicaIn</h1> <p align="center"> <strong>API RESTful</strong> desenvolvida com <strong>Node.js</strong>, utilizando <strong>Express</strong> como framework, <strong>Prisma ORM</strong> para gerenciamento do banco de dados <strong>PostgreSQL</strong>  e containerização através de <strong>Docker Compose</strong>. Este guia fornece instruções detalhadas para configuração, execução, rotas disponíveis e como rodar os testes da aplicação. </p>
-
-<h3 align="center">🔍 Informações extras </h3>
+<h1 align="center">💬ComunicaIn</h1>
 <p align="center">
-  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/GOOD_PRACTICES.md">Boas práticas</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/ARCHITECTURAL_DESIGN.md">Arquitetura da aplicação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/API_DECISIONS.md">Decisões tomadas</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://github.com/FerreiraWalter/comunicain/blob/main/NEXT_STEPS.md">Proximos passos</a>
+  <strong>RESTful API</strong> developed with <strong>Node.js</strong>, using <strong>Express</strong> as the framework, <strong>Prisma ORM</strong> for managing the <strong>PostgreSQL</strong> database, and containerized using <strong>Docker Compose</strong>. This guide provides detailed instructions for setup, running the app, available routes, and running tests.
 </p>
 
-## Pré-requisitos
+<h3 align="center">🔍 Additional Information</h3>
+<p align="center">
+  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/GOOD_PRACTICES.md">Best Practices</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/ARCHITECTURAL_DESIGN.md">Application Architecture</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/API_DECISIONS.md">Decisions Made</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/FerreiraWalter/comunicain/blob/main/NEXT_STEPS.md">Next Steps</a>
+</p>
 
-Antes de iniciar, certifique-se de que possui as seguintes ferramentas instaladas:
+## Prerequisites
 
--   Node.js (versão 18.x ou superior)
--   Docker
--   Docker Compose
+Before starting, make sure you have the following tools installed:
 
-----------
+- Node.js (version 18.x or higher)
+- Docker
+- Docker Compose
 
-## Iniciando a Aplicação
+---
 
-### Passos para Rodar:
+## Starting the Application
 
-1.  **Clone o Repositório**: Para começar, clone este repositório em sua máquina local utilizando o comando:
-    
+### Steps to Run:
 
-    > git clone https://github.com/FerreiraWalter/comunicain.git
-    > 
-    > cd comunicain
+1. **Clone the Repository**: Clone this repository to your local machine:
 
-	- Em seguida rode o comando:     `npm install` para instalar todas as dependências da aplicação.
-    
-2.  **Subir os Containers com Docker Compose**: Com o repositório clonado e dentro do diretório, inicie a aplicação com o Docker Compose. Esse comando irá construir e iniciar todos os containers necessários (aplicação Node.js e o PostgreSQL).
+    ```bash
+    git clone https://github.com/FerreiraWalter/comunicain.git
+    cd comunicain
+    ```
 
-    `docker compose up`
+    Then run:
 
-## Rotas Disponíveis
+    ```bash
+    npm install
+    ```
 
-Aqui estão todas as rotas disponíveis e como utilizá-las via **cURL**:
+    to install all dependencies.
 
-### 1. **Rota de Login**
+2. **Start Containers with Docker Compose**: From the project directory, start the app with Docker Compose. This will build and run all required containers (Node.js app and PostgreSQL).
+
+    ```bash
+    docker compose up
+    ```
+
+---
+
+## Available Routes
+
+### 1. **Login Route**
 
 #### **POST** `/auth/login`
 
--   **Descrição**: Faz a autenticação e retorna um token JWT.
--   **Parâmetros**:
-    -   `username`: admin
-    -   `password`: admin
--   **Exemplo**:
+- **Description**: Authenticates the user and returns a JWT token.  
+- **Parameters**:
+  - `username`: admin
+  - `password`: admin  
+- **Example**:
 
-    >     `curl -X POST http://localhost:3000/auth/login \
-    >     -H 'Content-Type: application/json' \
-    >     -d '{"username": "admin", "password": "admin"}'`
+    ```bash
+    curl -X POST http://localhost:3000/auth/login \
+      -H 'Content-Type: application/json' \
+      -d '{"username": "admin", "password": "admin"}'
+    ```
 
-    
+> **Note**: The JWT token returned from login should be used in the `Authorization` header for protected routes (`/users`, `/external-api`).
 
-**Obs**: O token JWT retornado no login deve ser utilizado nas demais rotas protegidas (como `/users`, `/external-api`) no cabeçalho `Authorization`.
+---
 
-### 2. **Rotas de Usuários**
+### 2. **User Routes**
 
 #### **GET** `/users`
 
--   **Descrição**: Retorna todos os usuários ativos.
--   **Exemplo**:
+- **Description**: Returns all active users.  
+- **Example**:
 
-    >   `curl -X GET http://localhost:3000/users \
-    >    -H 'authorization: Bearer <seu_token_jwt>'`
-
-    
+    ```bash
+    curl -X GET http://localhost:3000/users \
+      -H 'authorization: Bearer <your_jwt_token>'
+    ```
 
 #### **GET** `/users/:id`
 
--   **Descrição**: Retorna um usuário específico pelo ID.
--   **Parâmetros**:
-    -   `id` (string): O ID do usuário.
--   **Exemplo**:
+- **Description**: Returns a specific user by ID.  
+- **Parameters**:
+  - `id` (string): User ID  
+- **Example**:
 
-    >     `curl -X GET http://localhost:3000/users/12345 \
-    >     -H 'authorization: Bearer <seu_token_jwt>'`
-
-    
+    ```bash
+    curl -X GET http://localhost:3000/users/12345 \
+      -H 'authorization: Bearer <your_jwt_token>'
+    ```
 
 #### **POST** `/users`
 
--   **Descrição**: Cria um novo usuário.
--   **Parâmetros**:
-    -   `name` (string): Nome do usuário (mínimo 2 caracteres).
-    -   `email` (string): Email válido.
-    -    `bio` (string | opcional): Bio válida.
--   **Exemplo**:
-    >     `curl -X POST http://localhost:3000/users \
-    >     -H 'Content-Type: application/json' \
-    >     -H 'authorization: Bearer <seu_token_jwt>' \
-    >     -d '{"name": "John Doe", "email": "john@example.com"}'`
+- **Description**: Creates a new user.  
+- **Parameters**:
+  - `name` (string): User name (minimum 2 characters)
+  - `email` (string): Valid email
+  - `bio` (string | optional): Valid bio  
+- **Example**:
 
-    
+    ```bash
+    curl -X POST http://localhost:3000/users \
+      -H 'Content-Type: application/json' \
+      -H 'authorization: Bearer <your_jwt_token>' \
+      -d '{"name": "John Doe", "email": "john@example.com"}'
+    ```
 
 #### **PUT** `/users/:id`
 
--   **Descrição**: Atualiza um usuário existente.
--   **Parâmetros**:
-    -   `name` (string): Nome do usuário (mínimo 2 caracteres).
-    -   `email` (string): Email válido.
-    -   `bio` (string | opcional): Bio válida.
--   **Exemplo**:
+- **Description**: Updates an existing user.  
+- **Parameters**:
+  - `name` (string): User name (minimum 2 characters)
+  - `email` (string): Valid email
+  - `bio` (string | optional): Valid bio  
+- **Example**:
 
->     `curl -X PUT http://localhost:3000/users/12345 \
->     -H 'Content-Type: application/json' \
->     -H 'authorization: Bearer <seu_token_jwt>' \
->     -d '{"name": "Jane Doe"}'`
+    ```bash
+    curl -X PUT http://localhost:3000/users/12345 \
+      -H 'Content-Type: application/json' \
+      -H 'authorization: Bearer <your_jwt_token>' \
+      -d '{"name": "Jane Doe"}'
+    ```
 
 #### **DELETE** `/users/:id`
 
--   **Descrição**: Desativa um usuário, em vez de removê-lo permanentemente.
--   **Parâmetros**:
-    -   `id` (string): O ID do usuário.
--   **Exemplo**:
+- **Description**: Deactivates a user instead of permanently deleting them.  
+- **Parameters**:
+  - `id` (string): User ID  
+- **Example**:
 
-    > `curl -X DELETE http://localhost:3000/users/12345 \
-    > -H 'authorization: Bearer <seu_token_jwt>'`
+    ```bash
+    curl -X DELETE http://localhost:3000/users/12345 \
+      -H 'authorization: Bearer <your_jwt_token>'
+    ```
 
-    
+---
 
-### 3. **Rotas para API Externa**
+### 3. **External API Routes**
 
 #### **POST** `/external-api/data`
 
--   **Descrição**: Faz uma requisição para uma API externa (neste caso, o OpenWeatherMap) e retorna os dados climáticos.
+- **Description**: Requests data from an external API (OpenWeatherMap) and returns weather information.  
+- **Example**:
 
-**Exemplo**:
+    ```bash
+    curl -X POST http://localhost:3000/external-api/data \
+      -H 'authorization: Bearer <your_jwt_token>' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "url": "https://api.openweathermap.org/data/2.5",
+        "path": "/weather",
+        "headers": {},
+        "httpMethod": "GET",
+        "body": {},
+        "params": { "lat": "-10.9472", "lon": "-37.0731", "appid": "6640af658c4d4b9ebd7746b69b1d75df" },
+        "query": {}
+      }'
+    ```
 
-    `curl -X POST http://localhost:3000/external-api/data \ 
-     -H 'authorization: Bearer <seu_token_jwt>' \ 
-	  -H 'Content-Type: application/json' \ 
-     -d '{ "url": "https://api.openweathermap.org/data/2.5", "path": "/weather",
-	"headers": {}, "httpMethod": "GET", "body": {}, "params": { "lat":
-	"-10.9472", "lon": "-37.0731", "appid":
-	"6640af658c4d4b9ebd7746b69b1d75df" }, "query": {} 
-      }'`
+---
 
+## Running Tests
 
+The application uses **Jest**.
 
-## Como Rodar os Testes
+### Steps to Run Tests
 
-A aplicação utiliza **Jest**. 
-### Rodando os Testes
+1. **Install Dependencies** (if not already done):
 
-1.  **Instalar as Dependências**: Caso ainda não tenha instalado as dependências, utilize o seguinte comando:
-    `npm install` 
-    e em seguida:
-    `npx prisma migrate`
-    
-2.  **Executar os Testes**: Para rodar todos os testes unitários e de integração, execute o seguinte comando:
-    
-    `npm run test` 
-    
+    ```bash
+    npm install
+    npx prisma migrate
+    ```
+
+2. **Run Tests**: Execute all unit and integration tests with:
+
+    ```bash
+    npm run test
+    ```
